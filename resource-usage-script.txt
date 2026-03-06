@@ -1,0 +1,53 @@
+#!/bin/bash
+#
+
+
+##########################
+#Author- Arti Semwal
+#Date:- 11 Jan 2026
+#
+#
+#Version: v1
+#
+#
+#This script is used to report the resource usage in AWS.
+#
+##########################
+#
+
+#AWS EC2
+#AWS S3
+#AWS Lambda
+#AWS IAM users
+#
+
+
+# to list the S3 buckets
+
+{
+
+echo "Script ran on $(date)"
+echo "The list of S3 buckets :- "
+aws s3 ls
+
+echo "========================================================================================================================================="
+
+#to list EC2 isntances
+echo -e "List of EC2 instances :- "
+aws ec2 describe-instances | jq -r '.Reservations[].Instances[]|"Instance ID : \(.InstanceId) \nInstance Name-: \(.Tags[] |select(.Key=="Name")| .Value)\nPublic Ip-: \(.PublicIpAddress)\nKey Pair-: \(.KeyName)\n"'
+
+echo "=========================================================================================================================================="
+
+# to list AWS lambda functions
+echo "List of Lambda functions :- "
+aws lambda list-functions |jq -r '.FunctionName'
+
+echo "=========================================================================================================================================="
+
+#to list IAM users
+echo "List of IAM users :- "
+aws iam list-users | jq -r '.Users[] | "User:- \(.UserName)\nUserID:- \(.UserId)"'
+
+}
+
+               
